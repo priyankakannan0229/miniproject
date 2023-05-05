@@ -50,6 +50,7 @@ def signup():
         password1 = request.form.get("password")
         password2 = request.form.get("cpassword")
         phno = request.form.get("phno")
+        type = request.form.get("type")
 
         email_found = db.user.find_one({"email": email})
         
@@ -62,7 +63,7 @@ def signup():
 
         else:
             hashed = bcrypt.hashpw(password2.encode('utf-8'), bcrypt.gensalt())
-            user_input = {'name': user, 'email': email, 'password': hashed, 'phoneNo':phno}
+            user_input = {'name': user, 'email': email, 'password': hashed, 'phoneNo':phno, 'type':type}
             db.user.insert_one(user_input)
             
             user_data = db.user.find_one({"email": email})
@@ -71,6 +72,7 @@ def signup():
             return redirect('/dashboard')
 
     return render_template('register.html')
+
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
