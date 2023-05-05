@@ -16,7 +16,7 @@ def login():
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
-       
+        print(email)
         email_found = db.user.find_one({"email": email})
         if email_found:
             email_val = email_found['email']
@@ -46,25 +46,29 @@ def signup():
     if request.method == "POST":
         user = request.form.get("name")
         email = request.form.get("email")
-        
         password1 = request.form.get("password")
         password2 = request.form.get("cpassword")
+        print(password1)
+        print(password2)
         phno = request.form.get("phno")
         type = request.form.get("type")
+        print(type)
 
         email_found = db.user.find_one({"email": email})
         
         if email_found:
             message = 'This email already exists in database'
             return render_template('login.html', message=message)
+            print(message)
+        
         if password1 != password2:
             message = 'Passwords should match!'
-            return render_template('login.html', message=message)
+            print(message)
 
         else:
             hashed = bcrypt.hashpw(password2.encode('utf-8'), bcrypt.gensalt())
-            user_input = {'name': user, 'email': email, 'password': hashed, 'phoneNo':phno, 'type':type}
-            db.user.insert_one(user_input)
+            # user_input = {'name': user, 'email': email, 'password': hashed, 'phoneNo':phno, 'type':type}
+            # db.user.insert_one(user_input)
             
             user_data = db.user.find_one({"email": email})
             new_email = user_data['email']
