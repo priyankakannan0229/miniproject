@@ -49,11 +49,11 @@
 
                 <div class="form-outline mb-4">
                   <label class="form-label" for="typePasswordX-2">Type</label>
-                  <select class="form-control form-control-lg" id="cars" name="type">
-                    <option value="volvo">User</option>
-                    <option value="saab">Police</option>
-                    <option value="fiat">Taluk Officer</option>
-                    <option value="audi">Corporation Officer</option>
+                  <select class="form-control form-control-lg" id="type" name="type">
+                    <option value="user">User</option>
+                    <option value="police">Police</option>
+                    <option value="taluk">Taluk Officer</option>
+                    <option value="corporation">Corporation Officer</option>
                   </select>
                 </div>
 
@@ -62,7 +62,9 @@
                   <input class="form-check-input" type="checkbox" value="" id="form1Example3" />
                   <label class="form-check-label" for="form1Example3"> Remember password </label>
                 </div>
-
+                {% if message %}
+                <span class="text">{{message}}</span>
+                {% endif %}<br>
                 <button class="btn btn-primary btn-lg btn-block" style="background-color: #f4623a;" value="register" type="submit">Register</button>
               </form>
               <span class="text">Already a member?
