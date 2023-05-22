@@ -94,18 +94,29 @@ def logout():
     else:
         return redirect('/login')
 
-@app.route('/dashboard')
+@app.route('/dashboard', methods=["POST", "GET"])
 def dashboard():
     if "email" in session:
-        user = db.user.find({'email':session['email']})   
-        return render_template('dashboard.html')
+        user = db.user.find_one({'email':session['email']})
+        type = user['type']
+        complaint = db.complaints.find({'dept':type})
+        for i in complaint:
+            print(i['name'])
+        return render_template('dashboard.html',data=complaint)
     else:
         return redirect('/login')
 
-@app.route('/user')    
+@app.route('/user', methods=["POST", "GET"])    
 def user():
     if "email" in session:
-        user = db.user.find({'email':session['email']})   
-        return render_template('user.html')
+        if request.method == "POST":
+            user = session['email']  
+            name = request.form.get("name")
+            state = request.form.get("state")
+            complaint = request.form.get("complaint")
+            dept = request.form.get("dept")
+            complaint_data = {'email': user, 'name': name, 'state': state, 'complaint':complaint, 'dept':dept} 
+            db.complaints.insert_one(complaint_data)
+        return render_template('user.html', message='submitted')
     else:
-        return redirect('/login') 
+        return redirect('/login')
