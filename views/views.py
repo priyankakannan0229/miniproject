@@ -1,6 +1,7 @@
 from flask import make_response,Flask, flash, redirect, render_template, request, url_for, session
 from app import *
 import bcrypt
+import json
 
 @app.route('/')
 def home():
@@ -100,9 +101,10 @@ def dashboard():
         user = db.user.find_one({'email':session['email']})
         type = user['type']
         complaint = db.complaints.find({'dept':type})
-        for i in complaint:
+        complaint_list = list(complaint)
+        for i in complaint_list:
             print(i['name'])
-        return render_template('dashboard.html',data=complaint)
+        return render_template('dashboard.html',data=complaint_list,type=type)
     else:
         return redirect('/login')
 
